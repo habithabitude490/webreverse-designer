@@ -46,15 +46,16 @@ webreverse-designer/
 
 ### 1. Download
 ```bash
-# Option A: clone (once the GitHub repo exists)
-git clone https://github.com/habithabitude490/webreverse-designer.git ~/Bureau/skills/webreverse-designer
+# Option A: clone
+git clone https://github.com/habithabitude490/webreverse-designer.git
+cd webreverse-designer
 # Option B: local archive already present
-ls ~/Bureau/skills/webreverse-designer/SKILL.md   # must exist
+ls SKILL.md   # must exist, run from the skill folder
 ```
 
 ### 2. Verify the tree
 ```bash
-cd ~/Bureau/skills/webreverse-designer
+cd webreverse-designer
 find . -type f | sort
 python3 --version   # 3.8+ required (tested: 3.12 on Mint 22.3)
 ```
@@ -129,7 +130,7 @@ Rationale: trivial install, easy audit, zero supply-chain risk.
 - Never commit: secrets (`.env`, keys), `node_modules/`, `dist/`.
 - GitHub publication (with explicit permission only):
   ```bash
-  cd ~/Bureau/skills/webreverse-designer
+  cd webreverse-designer
   git init -b main && git add -A && git commit -m "feat: WebReverse Designer 1.2.0"
   gh repo create webreverse-designer --public --source=. --push
   ```

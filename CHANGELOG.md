@@ -4,6 +4,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and versioning follows [SemVer](https://semver.org/).
 
 ## [Unreleased]
+
+## [1.3.0] — 2026-10-18
+### Added
+- `SETUP.txt`: self-contained universal setup prompt in plain ASCII text —
+  paste into ANY coding agent/LLM, no install needed.
+- `SETUP-ANY-AGENT.md`: Markdown version of the same prompt with usage guide.
 ### Changed
 - `adapters/generic.md`: expanded into a full generic-coding-agent adapter
   (Option A zero-install via `AGENT-PROMPT.md`, Option B full `SKILL.md`

@@ -16,6 +16,8 @@ it **never rebuilds or generates any site**.
 webreverse-designer/
 ├── SKILL.md                  # skill identity + method (master file)
 ├── AGENT-PROMPT.md           # universal prompt for any coding agent
+├── SETUP.txt                 # same prompt, plain ASCII text (AI ingestion)
+├── SETUP-ANY-AGENT.md        # same prompt, Markdown version with guide
 ├── README.md                 # this file
 ├── LICENSE                   # MIT
 ├── CHANGELOG.md
@@ -66,8 +68,9 @@ python3 --version   # 3.8+ required (tested: 3.12 on Mint 22.3)
 | Claude.ai / web | `adapters/claude-ai.md` |
 | Other / unknown | `adapters/generic.md` |
 
-No installer needed? Copy `AGENT-PROMPT.md` into any coding agent
-(see that file): it is self-contained.
+No installer needed? Two zero-install options (same prompt):
+- `SETUP.txt` — plain ASCII text: paste into ANY agent/LLM, works everywhere.
+- `AGENT-PROMPT.md` — Markdown version with usage notes.
 
 ### 4. Activation test
 ```bash

@@ -1,0 +1,27 @@
+# Python / général
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node (si un projet analysé en contient — ne jamais committer ces dossiers)
+node_modules/
+dist/
+build/
+
+# OS / éditeurs
+.DS_Store
+Thumbs.db
+*~
+.vscode/
+.idea/
+
+# Secrets — ne jamais committer
+.env
+*.pem
+*.key
+credentials*.json

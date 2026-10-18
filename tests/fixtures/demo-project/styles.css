@@ -1,0 +1,7 @@
+body { font-family: sans-serif; color: #333; background: #fff; }
+.site-header { display: flex; background: #1b2a4a; color: #fff; }
+.btn-primary { background: #2e9e5b; color: #fff; border-radius: 8px; }
+.hero { padding: 64px 24px; }
+.cards { display: grid; }
+.card { border: 1px solid #ddd; border-radius: 8px; }
+@media (min-width: 768px) { .cards { grid-template-columns: repeat(3, 1fr); } }

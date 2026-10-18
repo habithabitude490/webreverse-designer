@@ -45,7 +45,7 @@ webreverse-designer/
 ### 1. Download
 ```bash
 # Option A: clone (once the GitHub repo exists)
-git clone https://github.com/<OWNER>/webreverse-designer.git ~/Bureau/skills/webreverse-designer
+git clone https://github.com/habithabitude490/webreverse-designer.git ~/Bureau/skills/webreverse-designer
 # Option B: local archive already present
 ls ~/Bureau/skills/webreverse-designer/SKILL.md   # must exist
 ```

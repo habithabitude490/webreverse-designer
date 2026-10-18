@@ -5,6 +5,27 @@ and versioning follows [SemVer](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.5.0] — 2026-10-18
+### Added
+- **Live analysis support**: when the environment provides browser/network
+  tools, verified live capture is allowed — new evidence types P6 (in-session
+  capture with viewport px) and P7 (fetched source), live responsive mode
+  (multi-width captures) in `references/responsive-analysis.md`,
+  updated `SKILL.md` (inputs, method step 1, inviolable rules, limitations).
+- `adapters/opencode.md`: OpenCode V2 installation card (global
+  `~/.config/opencode/skills/`, project `.opencode/skills/`,
+  `.claude/skills` compatibility, `@webreverse-designer` activation).
+- `check_project.py`: ignored symlinks are counted and reported as a
+  warning. 2 regression tests added (12 total).
+### Fixed
+- `check_project.py`: CSS class false positives — `url(logo.png)` and
+  `@import "base.css"` no longer yield `png`/`css` pseudo-classes
+  (negative lookbehind `(?<![\w\-/])`); PEP8 blank lines.
+### Changed
+- README: publication status updated, OpenCode card added, live-analysis
+  limits, test count, version examples refreshed.
+- `INSTALL-CLAUDE-CODE.txt`: version references bumped to 1.5.0.
+
 ## [1.4.0] — 2026-10-18
 ### Added
 - `INSTALL-CLAUDE-CODE.txt`: copy-paste English prompt for an AI with

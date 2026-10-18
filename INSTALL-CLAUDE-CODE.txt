@@ -62,10 +62,10 @@ STEP 3 - VERIFY (all must pass)
   line "name: webreverse-designer".
 3c. Tool version check (takes no folder argument):
   python3 ~/.claude/skills/webreverse-designer/scripts/check_project.py --version
-  Expected: a version number such as 1.4.0, exit code 0.
+  Expected: a version number such as 1.5.0, exit code 0.
 3d. Test suite (run from the installed folder):
   cd ~/.claude/skills/webreverse-designer && python3 -m unittest discover -s tests -v
-  Expected: 8 tests, OK. On failure, quote the full output.
+  Expected: 12 tests, OK. On failure, quote the full output.
 3e. Smoke test on the bundled fixture:
   python3 ~/.claude/skills/webreverse-designer/scripts/check_project.py ~/.claude/skills/webreverse-designer/tests/fixtures/demo-project
   Expected: 5 files (HTML 1, CSS 1, JS 2, other 1), entry point index.html.
@@ -99,4 +99,4 @@ NOTES (human, not pasted)
 - No Claude Code skill support at all? Zero-install fallback: use
   SETUP.txt from the same repo instead (paste it into any chat and
   the agent acts as the designer with no installation).
-- Skill version: 1.4.0. License: MIT.
+- Skill version: 1.5.0. License: MIT.

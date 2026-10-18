@@ -4,7 +4,8 @@ Open-source AI skill (MIT) specialized in **analyzing and documenting
 the design of existing websites**. It observes, inventories, and documents —
 it **never rebuilds or generates any site**.
 
-- Inputs: public URL, screenshots, HTML/CSS/JS files, user context.
+- Inputs: public URL (live capture when the agent provides browser/network
+  tools), screenshots, HTML/CSS/JS files, user context.
 - Output: **structured 12-section Markdown report** with confidence
   levels, limits, and prioritized recommendations (impact × effort).
 - Requirements: Python 3, **standard library only**, Linux Mint
@@ -33,14 +34,15 @@ webreverse-designer/
 ├── scripts/
 │   └── check_project.py      # static inventory (stdlib, never executes)
 ├── tests/
-│   ├── test_check_project.py # 8 unittest tests
+│   ├── test_check_project.py # 12 unittest tests
 │   └── fixtures/demo-project # fictional mini-site (5 files)
 ├── examples/
 │   ├── README.md                 # examples guide
 │   ├── sample-report-demo-bakery.md
 │   └── demo-project/         # fictional mini-site for manual trials
 └── adapters/
-    ├── claude-code.md  ├── cursor.md  ├── claude-ai.md  └── generic.md
+    ├── claude-code.md  ├── cursor.md  ├── claude-ai.md
+    ├── opencode.md     └── generic.md
 ```
 
 ## Installation — Linux Mint
@@ -66,6 +68,7 @@ python3 --version   # 3.8+ required (tested: 3.12 on Mint 22.3)
 | Tool | Card |
 |-------|-------|
 | Claude Code | `adapters/claude-code.md` |
+| OpenCode | `adapters/opencode.md` |
 | Cursor | `adapters/cursor.md` |
 | Claude.ai / web | `adapters/claude-ai.md` |
 | Other / unknown | `adapters/generic.md` |
@@ -79,7 +82,7 @@ No installer needed? Two zero-install options (same prompt):
 ### 4. Activation test
 ```bash
 python3 scripts/check_project.py tests/fixtures/demo-project
-python3 -m unittest discover -s tests -v   # 8 tests expected: OK
+python3 -m unittest discover -s tests -v   # 12 tests expected: OK
 ```
 
 ### 5. Test on a local project
@@ -105,8 +108,9 @@ Read-only is enough. No `sudo`, no packages, no API keys.
 - Replay the inventory: `python3 scripts/check_project.py examples/demo-project`.
 
 ## Limits (summary)
-- Bare URL ≠ guaranteed access; without browser/network: screenshots required,
-  never simulate.
+- Bare URL ≠ guaranteed access. With browser/network tools: live capture
+  allowed and cited (P6/P7); without them: screenshots required.
+  Never simulate.
 - 1 single width → responsive **not assessable**; breakpoints never invented.
 - Interactions only if **observed** or **proven by code**.
 - Accessibility: visual/static presumptions, **no WCAG verdict**
@@ -131,14 +135,14 @@ Rationale: trivial install, easy audit, zero supply-chain risk.
 ## Open-source sharing
 - License: MIT (`LICENSE`). Example: fictional case, no third-party rights.
 - Never commit: secrets (`.env`, keys), `node_modules/`, `dist/`.
-- GitHub publication (with explicit permission only):
+- Published: [github.com/habithabitude490/webreverse-designer](https://github.com/habithabitude490/webreverse-designer) — releases tagged `vX.Y.Z`.
+- Publishing an update:
   ```bash
-  cd webreverse-designer
-  git init -b main && git add -A && git commit -m "feat: WebReverse Designer 1.2.0"
-  gh repo create webreverse-designer --public --source=. --push
+  git add -A && git commit -m "feat: WebReverse Designer 1.5.0"
+  git push origin main
+  git tag v1.5.0 && git push origin v1.5.0
+  gh release create v1.5.0 --title "v1.5.0" --notes "…"
   ```
-  **Not published to date** — no online publication was made
-  by the assistant (no GitHub access).
 - Contributions: see `CONTRIBUTING.md`.
 
 ## Security

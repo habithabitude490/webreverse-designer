@@ -1,7 +1,8 @@
 # Responsive analysis — method
 
-> Read at step 4, as soon as ≥ 1 screenshot or a CSS with `@media` is provided.
-> Prerequisite: `evidence-and-confidence.md`. Without 2 widths: not assessable section.
+> Read at step 4, as soon as ≥ 1 screenshot, live capture, or a CSS with
+> `@media` is provided.
+> Prerequisite: `evidence-and-confidence.md`. Without 2 real widths: not assessable section.
 
 ## Principle
 Responsive can only be assessed by comparing ≥ 2 real widths.
@@ -37,3 +38,18 @@ For each component (header/nav, hero, card grid, form, footer):
 - "Estimated: stacked hero on mobile, title ≈ 28px vs ≈ 56px desktop." [Medium]
 - "Unknown: 768–1024px range (no screenshot)."
 - FORBIDDEN: "breakpoint at 768px" without a cited media query or exact width.
+
+## 5. Live mode (browser tool available in-session)
+
+When the environment exposes a browser tool, responsive assessment is
+expected work, not an option:
+
+1. Capture the page at the reference widths (e.g. 390, 768, 1440) —
+   record the exact viewport px of every capture.
+2. Each capture is P6 evidence: compare per the section 2 protocol.
+3. Breakpoints: only assert a transition a capture actually SHOWS
+   ("nav switches between 768 and 1024"), never an exact value that was
+   not observed. Declared `@media` values may be quoted from provided
+   or fetched CSS (file:line) and marked as "declared".
+4. Fewer than 2 real widths while a browser tool is available is a
+   method failure, not a "not assessable" case — capture more.

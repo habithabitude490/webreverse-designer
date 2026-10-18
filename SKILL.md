@@ -3,7 +3,7 @@ name: webreverse-designer
 description: Document the design of an existing website (structure, components, responsive, observed interactions) into a 12-section Markdown report. Use when asked to analyze, audit, or reverse-design a site. Never builds sites.
 license: MIT
 metadata:
-  version: 1.4.0
+  version: 1.5.0
   language: en
   requires: python3 (stdlib only)
 ---
@@ -33,19 +33,25 @@ a proprietary site, or generate automatic reconstruction code.
 
 | # | Type | Detail |
 |---|------|--------|
-| E1 | Public URL | E.g. `https://example.com` — access not guaranteed (see rules). |
+| E1 | Public URL | E.g. `https://example.com` — live capture allowed when the environment provides browser/network tools; otherwise access not guaranteed (see rules). |
 | E2 | Screenshots | Desktop / tablet / mobile, **widths in px** when known. |
 | E3 | Local files | `.html` / `.css` / `.js` + context (framework, build). |
 | E4 | User context | Analysis goal, target pages, constraints. |
 
 No evidence available? Ask for screenshots or files.
-Never simulate a visit, DOM access, or test.
+If the environment provides browser/network tools, real access is allowed:
+capture live evidence (page loads, screenshots at known viewport widths,
+fetched sources) and cite each capture (P6/P7). **Never simulate** a visit,
+DOM access, or test.
 
 ## Method (strict order)
 
 1. **Evidence inventory.** List what is ACTUALLY available:
    URL reachable in this session? Screenshots (count, pages, px widths)?
    Files (paths, readable)? Goal and scope?
+   If browser/network tools are available, capture live evidence BEFORE
+   analyzing: load the page, screenshot each reference width (record the
+   exact px), fetch the sources. Tag captures P6/P7 and cite the tool used.
    If a local folder is provided, run first from the skill root:
    `python3 scripts/check_project.py <folder> [--json]`
    Never execute the analyzed code.
@@ -75,7 +81,11 @@ Never simulate a visit, DOM access, or test.
 - Tag every finding **Observed / Estimated / Hypothesis / Unknown** + evidence.
 - Never invent: site access, file reads, test results.
   A bare URL ≠ DOM, source, internal data, interactions.
-- Without browser/network: ask for screenshots or files, never simulate.
+- Live observation (browser/network tools) is allowed and encouraged when
+  the environment provides them, but only real, captured facts may be used:
+  cite tool + URL + viewport px (visual) or exact fetched source.
+  Never simulate access or claim more than what was captured.
+- Without browser/network tools: ask for screenshots or files.
 - Never bypass auth, paywalls, CAPTCHAs, access controls, anti-bot.
 - Never collect or reproduce secrets (passwords, API keys, cookies, tokens).
 - Never execute discovered code without explicit permission + isolated env.
@@ -86,9 +96,11 @@ Never simulate a visit, DOM access, or test.
 
 ## Limitations
 
-No browser/network: no "live" analysis. No multiple widths:
-no responsive verdict. No code: no technology claims.
-No keyboard / screen-reader test: no definitive accessibility verdict.
+Without browser/network tools in the environment: no "live" analysis —
+screenshots or files required. With them: live capture is allowed, but
+still no definitive accessibility verdict without real keyboard /
+screen-reader tests.
+No multiple widths: no responsive verdict. No code: no technology claims.
 
 ## Resources
 

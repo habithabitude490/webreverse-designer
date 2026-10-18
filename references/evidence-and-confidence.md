@@ -16,10 +16,14 @@ confidence vocabulary is forbidden.
 | P3 | Screenshot without width / cropped | "mobile screenshot, unknown width" | Medium |
 | P4 | Unverified user statement | "user says the menu is sticky" | Weak |
 | P5 | Bare URL (no session access) | `https://example.com` provided, not visited | Nil for content |
+| P6 | Live capture in-session (browser tool) | "live capture 390px, burger nav visible" | Strong (visual, moment T) |
+| P7 | Live fetched source in-session (HTTP tool) | "index.html fetched live, 42 lines" | Strong (snapshot of moment T) |
 
-Rule: a bare URL proves nothing about content. Until the session has
-actually fetched the page (and it is allowed: no bypassing),
-the status is "URL provided, content unverified".
+Rule: a bare URL proves nothing about content. It becomes evidence only
+once the session has actually loaded or fetched the page with a real tool
+(and it is allowed: no bypassing). Then cite the tool used, the URL, the
+viewport px for visual captures, and treat every capture as a
+moment-in-time snapshot (dynamic sites may differ later).
 
 ## 2. Finding levels
 
@@ -37,7 +41,7 @@ the status is "URL provided, content unverified".
 
 | Level | When to use |
 |--------|-------------|
-| **High** | P1 or P2, cited evidence, reproducible. |
+| **High** | P1, P2, P6 or P7 with cited capture, reproducible. |
 | **Medium** | P3 or visual estimate with margin, or partial P1 (truncated file). |
 | **Low** | P4 or logical but unverified hypothesis. |
 | **Not assessable** | P5 only, or total absence of evidence. Write "Not assessable" + missing evidence. |
@@ -45,7 +49,9 @@ the status is "URL provided, content unverified".
 ## 4. Forbidden / mandatory phrasing
 
 - Forbidden: "the site uses React", "breakpoint at 768px", "WCAG AA accessible"
-  without matching P1/P2 evidence.
+  without matching P1/P2/P6/P7 evidence.
+- Forbidden: any "live" claim without a cited capture (tool + URL +
+  viewport px or exact fetched source).
 - Mandatory: every report section contains at least one limitation mention.
 - Mandatory: report section 10 ("Findings by confidence level")
   groups all findings sorted High → Not assessable.
@@ -57,3 +63,6 @@ Each finding follows the format:
 
 Example:
 `[High] [Observed] — The header contains a left logo + 5 links + 1 CTA. Evidence: desktop screenshot 1440px + index.html:12-28.`
+
+Live example:
+`[High] [Observed] — At 390px the nav collapses to a burger icon. Evidence: live capture P6, viewport 390px (browser tool, 2026-10-18).`

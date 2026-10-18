@@ -4,6 +4,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and versioning follows [SemVer](https://semver.org/).
 
 ## [Unreleased]
+### Changed
+- `adapters/generic.md`: expanded into a full generic-coding-agent adapter
+  (Option A zero-install via `AGENT-PROMPT.md`, Option B full `SKILL.md`
+  injection, acceptance checklist, troubleshooting).
 
 ## [1.2.0] — 2026-10-18
 ### Added

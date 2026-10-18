@@ -41,6 +41,33 @@ class TestInventory(unittest.TestCase):
         self.assertIn("btn-primary", by_path["index.html"]["classes"])
         self.assertIn("nav", by_path["index.html"]["ids"])
 
+    def test_css_no_extension_false_positives(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            with open(os.path.join(tmp, "s.css"), "w") as fh:
+                fh.write('@import url("base.css");\n'
+                         ".hero { background: url(logo.png); }\n"
+                         ".grid { width: 50%; }\n")
+            p = run_script(tmp, "--json")
+            self.assertEqual(p.returncode, 0, p.stderr)
+            data = json.loads(p.stdout)
+            classes = data["files"][0]["classes"]
+            self.assertIn("hero", classes)
+            self.assertIn("grid", classes)
+            self.assertNotIn("png", classes)
+            self.assertNotIn("css", classes)
+
+    def test_symlinks_skipped_with_warning(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            with open(os.path.join(tmp, "real.css"), "w") as fh:
+                fh.write(".a { color: #333; }\n")
+            os.symlink(os.path.join(tmp, "real.css"),
+                       os.path.join(tmp, "link.css"))
+            p = run_script(tmp, "--json")
+            self.assertEqual(p.returncode, 0, p.stderr)
+            data = json.loads(p.stdout)
+            self.assertEqual(data["counts"]["total"], 1)
+            self.assertTrue(any("symlink" in w for w in data["warnings"]))
+
     def test_excludes_node_modules_and_git(self):
         with tempfile.TemporaryDirectory() as tmp:
             for d in ("node_modules", ".git", "dist"):
@@ -62,6 +89,7 @@ class TestInventory(unittest.TestCase):
             data = json.loads(p.stdout)
             self.assertEqual(data["counts"]["total"], 0)
             self.assertTrue(any("Empty" in w for w in data["warnings"]))
+
     def test_missing_dir_exit_1(self):
         p = run_script("/path/that/does/not/exist/at/all")
         self.assertEqual(p.returncode, 1)

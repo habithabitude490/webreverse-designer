@@ -23,7 +23,7 @@ import re
 import sys
 from dataclasses import asdict, dataclass, field
 
-VERSION = "1.4.0"
+VERSION = "1.5.0"
 
 DEFAULT_EXCLUDE_DIRS = {
     ".git", "node_modules", "dist", "build", ".venv", "venv",
@@ -39,6 +39,9 @@ RE_JS_IMPORT = re.compile(
 )
 RE_CLASS = re.compile(r'class=["\']([^"\']+)["\']')
 RE_ID = re.compile(r'id=["\']([^"\']+)["\']')
+# CSS class heuristic: ignores `.x` preceded by word/dash/slash chars,
+# which excludes url(file.css), image.png and vendored -ms- prefixed names.
+RE_CSS_CLASS = re.compile(r'(?<![\w\-/])\.([A-Za-z_][\w-]*)')
 
 
 @dataclass
@@ -94,13 +97,16 @@ def read_head(path: str, max_bytes: int):
         return raw.decode("utf-8"), truncated, False
     except UnicodeDecodeError:
         return raw.decode("utf-8", errors="replace"), truncated, True
+
+
 def extract_signals(kind, text):
     """Declarative signals extracted from text content (never executed).
 
     Input: kind (html|css|js|other), text (decoded file head).
     Output: (refs, classes, ids) — deduplicated lists, 50 max each.
     - html: href of <link>, src of <script>, class/id attributes.
-    - css: @import + .class heuristic (simple selectors).
+    - css: @import + .class heuristic (simple selectors, false-positive
+      filtered: url() targets, file extensions, vendor prefixes).
     - js: import/require targets (declarative, unresolved).
     Agent usage: interpret only as hints; cite file:line
     in the report, never as proof of execution.
@@ -120,7 +126,7 @@ def extract_signals(kind, text):
             classes.extend(m.split())
         ids.extend(RE_ID.findall(text))
     elif kind == "css":
-        classes.extend(re.findall(r"\.([A-Za-z_][\w-]*)", text))
+        classes.extend(RE_CSS_CLASS.findall(text))
     refs = list(dict.fromkeys(r for r in refs if r.strip()))[:50]
     classes = list(dict.fromkeys(c for c in classes if c.strip()))[:50]
     ids = list(dict.fromkeys(i for i in ids if i.strip()))[:50]
@@ -151,6 +157,7 @@ def scan_file(full_path, rel_path, max_bytes):
     return FileEntry(rel_path, kind, size, lines, truncated, enc,
                      refs, classes, ids)
 
+
 def scan_project(root, max_bytes, exclude=None):
     """Inventory a project folder. Recommended agent entry point.
 
@@ -169,13 +176,17 @@ def scan_project(root, max_bytes, exclude=None):
         inv.warnings.append("Not-a-folder path: %s" % root)
         return inv
     skipped = []
+    links_skipped = 0
     for dirpath, dirnames, filenames in os.walk(root, followlinks=False):
         for d in [x for x in dirnames if x in exclude]:
             skipped.append(os.path.relpath(os.path.join(dirpath, d), root))
         dirnames[:] = [d for d in dirnames if d not in exclude]
         for fn in sorted(filenames):
             full = os.path.join(dirpath, fn)
-            if os.path.islink(full) or not os.path.isfile(full):
+            if os.path.islink(full):
+                links_skipped += 1
+                continue
+            if not os.path.isfile(full):
                 continue
             rel = os.path.relpath(full, root)
             entry = scan_file(full, rel, max_bytes)
@@ -183,6 +194,9 @@ def scan_project(root, max_bytes, exclude=None):
                 inv.unreadable.append(rel)
             inv.files.append(entry)
     inv.skipped_dirs = sorted(set(skipped))
+    if links_skipped:
+        inv.warnings.append(
+            "%d symlink(s) ignored (never followed)." % links_skipped)
     inv.entry_points = sorted(
         f.path for f in inv.files
         if f.kind == "html"

@@ -3,7 +3,7 @@ name: webreverse-designer
 description: Document the design of an existing website (structure, components, responsive, observed interactions) into a 12-section Markdown report. Use when asked to analyze, audit, or reverse-design a site. Never builds sites.
 license: MIT
 metadata:
-  version: 1.3.0
+  version: 1.4.0
   language: en
   requires: python3 (stdlib only)
 ---

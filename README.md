@@ -15,6 +15,7 @@ it **never rebuilds or generates any site**.
 ```
 webreverse-designer/
 ├── SKILL.md                  # skill identity + method (master file)
+├── INSTALL-CLAUDE-CODE.txt   # copy-paste prompt: an AI installs the skill in Claude Code
 ├── AGENT-PROMPT.md           # universal prompt for any coding agent
 ├── SETUP.txt                 # same prompt, plain ASCII text (AI ingestion)
 ├── SETUP-ANY-AGENT.md        # same prompt, Markdown version with guide
@@ -72,6 +73,8 @@ python3 --version   # 3.8+ required (tested: 3.12 on Mint 22.3)
 No installer needed? Two zero-install options (same prompt):
 - `SETUP.txt` — plain ASCII text: paste into ANY agent/LLM, works everywhere.
 - `AGENT-PROMPT.md` — Markdown version with usage notes.
+- Claude Code install via an AI? `INSTALL-CLAUDE-CODE.txt` — paste into an
+  AI with shell access; it copies + verifies the skill for you.
 
 ### 4. Activation test
 ```bash

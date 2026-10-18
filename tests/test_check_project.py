@@ -86,6 +86,16 @@ class TestInventory(unittest.TestCase):
         self.assertIn("Inventory", p.stdout)
         self.assertIn("index.html", p.stdout)
 
+    def test_version_flag_needs_no_path(self):
+        p = run_script("--version")
+        self.assertEqual(p.returncode, 0, p.stderr)
+        self.assertRegex(p.stdout.strip(), r"^\d+\.\d+\.\d+$")
+
+    def test_missing_path_prints_usage_exit_1(self):
+        p = run_script()
+        self.assertEqual(p.returncode, 1)
+        self.assertIn("Usage", p.stderr)
+
 
 if __name__ == "__main__":
     unittest.main()

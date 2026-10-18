@@ -5,6 +5,16 @@ and versioning follows [SemVer](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.4.0] — 2026-10-18
+### Added
+- `INSTALL-CLAUDE-CODE.txt`: copy-paste English prompt for an AI with
+  shell access to install + verify the skill in Claude Code
+  (`~/.claude/skills/webreverse-designer`), ASCII, zero manual commands.
+### Fixed
+- `check_project.py --version` no longer requires a folder argument
+  (`path` is now optional; missing path prints usage + exit 1).
+  Regression test added (`test_version_flag_needs_no_path`).
+
 ## [1.3.0] — 2026-10-18
 ### Added
 - `SETUP.txt`: self-contained universal setup prompt in plain ASCII text —

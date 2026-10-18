@@ -1,0 +1,102 @@
+================================================================
+WebReverse Designer - CLAUDE CODE SETUP PROMPT (English, plain text)
+================================================================
+WHAT THIS IS: a copy-paste prompt you give to an AI assistant that has
+shell access on your Linux machine (Claude Code itself or any coding
+agent with a terminal). That AI installs and verifies the WebReverse
+Designer skill inside Claude Code for you. You run zero commands.
+
+Skill repo: https://github.com/habithabitude490/webreverse-designer
+Install target: ~/.claude/skills/webreverse-designer
+Needs on this machine: python3 (>= 3.8) and git. No sudo, no pip
+packages, no API keys, no secrets. Install is read-only file copy.
+
+HOW TO USE (human, 3 steps):
+1. Copy everything between COPY FROM HERE and COPY TO HERE below.
+2. Paste it into an AI that can run shell commands on your machine
+   (open Claude Code and paste it in a new session).
+3. Answer its questions (clone vs local folder). It does the rest and
+   reports back. Then open a NEW session and test with the sentence
+   in STEP 5.
+
+------------------------- COPY FROM HERE -------------------------
+
+You are an installer. Install the WebReverse Designer skill into
+Claude Code on this Linux machine. Follow the steps in order exactly.
+Stop and report any failure instead of guessing. Never use sudo, never
+install pip packages, never ask for or handle API keys or secrets.
+
+CONTEXT
+- Skill repo: https://github.com/habithabitude490/webreverse-designer
+- Install path (mandatory): ~/.claude/skills/webreverse-designer
+  The folder name MUST stay "webreverse-designer" (it is the skill
+  name). Never rename it. Do not edit any file inside it.
+- Needs: python3 3.8+ and git. Read-only install (file copy only).
+- If the user already has the skill folder on disk, ask for its path
+  and copy from there instead of cloning.
+
+STEP 0 - PREREQUISITES
+Run: python3 --version ; git --version
+Abort with a clear message if python3 is missing or older than 3.8.
+Git is required for the clone path only; a local folder needs no git.
+
+STEP 1 - GET THE SKILL SOURCE
+Option A (clone, preferred):
+  git clone https://github.com/habithabitude490/webreverse-designer.git /tmp/webreverse-designer-src
+Option B (local folder): copy from the path the user provides:
+  cp -r <USER_PATH> /tmp/webreverse-designer-src
+Verify the source root contains SKILL.md. If not, stop and ask the
+user for the correct path or URL.
+
+STEP 2 - INSTALL INTO CLAUDE CODE
+  mkdir -p ~/.claude/skills
+  rm -rf ~/.claude/skills/webreverse-designer
+  cp -r /tmp/webreverse-designer-src ~/.claude/skills/webreverse-designer
+
+STEP 3 - VERIFY (all must pass)
+3a. Required files exist:
+  ls ~/.claude/skills/webreverse-designer/SKILL.md
+  ls ~/.claude/skills/webreverse-designer/scripts/check_project.py
+  ls ~/.claude/skills/webreverse-designer/references/
+3b. Frontmatter check: the first lines of SKILL.md must contain the
+  line "name: webreverse-designer".
+3c. Tool version check (takes no folder argument):
+  python3 ~/.claude/skills/webreverse-designer/scripts/check_project.py --version
+  Expected: a version number such as 1.4.0, exit code 0.
+3d. Test suite (run from the installed folder):
+  cd ~/.claude/skills/webreverse-designer && python3 -m unittest discover -s tests -v
+  Expected: 8 tests, OK. On failure, quote the full output.
+3e. Smoke test on the bundled fixture:
+  python3 ~/.claude/skills/webreverse-designer/scripts/check_project.py ~/.claude/skills/webreverse-designer/tests/fixtures/demo-project
+  Expected: 5 files (HTML 1, CSS 1, JS 2, other 1), entry point index.html.
+
+STEP 4 - CLEAN UP
+Delete the temporary source: rm -rf /tmp/webreverse-designer-src
+
+STEP 5 - HAND TO THE USER
+Tell the user to open a NEW Claude Code session and type exactly:
+  Using WebReverse Designer, inventory tests/fixtures/demo-project.
+If Claude Code does not pick up the skill automatically, give the
+fallback: paste the content of
+~/.claude/skills/webreverse-designer/SKILL.md at the top of the
+conversation, then ask the analysis question.
+
+STEP 6 - FINAL REPORT
+Reply with exactly these items:
+  "Claude Code install complete."
+  - Installed path: ~/.claude/skills/webreverse-designer
+  - python3 version and git version (from STEP 0)
+  - Tool version (from 3c) and test result (8/8 OK or quoted failures)
+  - Update later: cd ~/.claude/skills/webreverse-designer && git pull
+    (clone installs only; otherwise re-copy the new folder)
+  - Uninstall: rm -rf ~/.claude/skills/webreverse-designer
+
+-------------------------- COPY TO HERE --------------------------
+
+NOTES (human, not pasted)
+- The AI doing the install needs shell access on the target machine.
+  A plain web chatbot with no terminal cannot run it.
+- No Claude Code skill support at all? Zero-install fallback: use
+  SETUP.txt from the same repo instead (paste it into any chat and
+  the agent acts as the designer with no installation).
+- Skill version: 1.4.0. License: MIT.

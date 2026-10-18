@@ -23,7 +23,7 @@ import re
 import sys
 from dataclasses import asdict, dataclass, field
 
-VERSION = "1.2.0"
+VERSION = "1.4.0"
 
 DEFAULT_EXCLUDE_DIRS = {
     ".git", "node_modules", "dist", "build", ".venv", "venv",
@@ -237,10 +237,12 @@ def to_text(inv):
 
 def build_parser():
     p = argparse.ArgumentParser(description="Inventory a folder (no exec).")
-    p.add_argument("path", help="Local project folder to inventory.")
+    p.add_argument("path", nargs="?", default=None,
+                   help="Local project folder to inventory.")
     p.add_argument("--json", action="store_true", help="JSON output.")
     p.add_argument("--max-bytes", type=int, default=262144)
-    p.add_argument("--version", action="store_true")
+    p.add_argument("--version", action="store_true",
+                   help="Print tool version and exit.")
     return p
 
 
@@ -249,6 +251,11 @@ def main(argv=None):
     if args.version:
         print(VERSION)
         return 0
+    if not args.path:
+        print("Error: missing folder path.", file=sys.stderr)
+        print("Usage: check_project.py /path/to/project [--json]",
+              file=sys.stderr)
+        return 1
     if args.max_bytes <= 0:
         print("Error: --max-bytes must be > 0.", file=sys.stderr)
         return 1
